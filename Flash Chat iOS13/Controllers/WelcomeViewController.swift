@@ -1,12 +1,15 @@
 
 
 import UIKit
+import CLTypingLabel
+import FirebaseCore
 
 class WelcomeViewController: UIViewController {
 
-    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var titleLabel: CLTypingLabel!
+
     
-    let textFlash = "⚡️FlashChat"
+    let textFlash = k.textFlashe
     var index = 0
     
     override func viewDidLoad() {
