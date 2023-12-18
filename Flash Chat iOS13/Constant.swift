@@ -13,4 +13,6 @@ struct k {
     static let  RegisterToChat = "RegisterToChat"
     static let  LoginToChat = "LoginToChat"
     static let  textFlashe = "⚡️FlashChat"
+    static let cellIdentifier = "ReusableCell"
+    static let cellNibName = "MessageCellTableViewCell"
 }
