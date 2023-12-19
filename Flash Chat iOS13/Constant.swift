@@ -15,4 +15,23 @@ struct k {
     static let  textFlashe = "⚡️FlashChat"
     static let cellIdentifier = "ReusableCell"
     static let cellNibName = "MessageCellTableViewCell"
+    
+    struct BrandColors {
+        
+        static let purple = "BrandPurple"
+        static let lightPurple = "BrandLightPurple"
+        static let blue = "BrandBlue"
+        static let dateField = "date"
+        
+    }
+    
+    struct FStore {
+        
+        static let collectionName = "message"
+        static let senderField = "sender"
+        static let bodyField = "body"
+        static let dateField = "date"
+        
+    }
+    
 }
