@@ -3,21 +3,19 @@
 import UIKit
 import FirebaseAuth
 import FirebaseFirestoreInternal
+import Network
 
 class ChatViewController: UIViewController {
 
+    //MARK: -IBOutlets
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var messageTextfield: UITextField!
     
-    
-    let message: [Messages] = [Messages(sender: "1@2.com", body: "Hey!"),
-                               Messages(sender: "a@b.com", body: "Hello!"),
-                               Messages(sender: "1@2.com", body: "Bye!")
-                             ]
-    
-    
+    //MARK: -variables
+    var message: [Messages] = []
     let db = Firestore.firestore()
     
+    //MARK: -Life Cycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -26,7 +24,7 @@ class ChatViewController: UIViewController {
         
         tableView.delegate = self
         tableView.dataSource = self
-        
+        loadMessage()
         
         tableView.register(UINib(nibName: k.cellNibName, bundle: nil), forCellReuseIdentifier: k.cellIdentifier)
 
@@ -49,6 +47,30 @@ class ChatViewController: UIViewController {
     }
     
     
+    func loadMessage() {
+        
+        message = []
+        
+        db.collection(k.FStore.collectionName).getDocuments { (querySnapshot, error) in
+            if let e = error {
+                print("there was an issue retrieving data from FireStrore. \(e)")
+            }else {
+                
+                if let snapshotDocuments = querySnapshot?.documents{
+                    for doc in snapshotDocuments {
+                        let data = doc.data()
+                        if let messageSender = data[k.FStore.senderField] as? String, let messageBody = data[k.FStore.bodyField] as? String {
+                            let newMessage = Messages(sender: messageSender, body: messageBody)
+                            self.message.append(newMessage)
+                        }
+                    }
+                }
+            }
+            
+        }
+    }
+    
+    
     @IBAction func logOutPressed(_ sender: UIBarButtonItem) {
         
         do {
@@ -64,7 +86,7 @@ class ChatViewController: UIViewController {
 
 }
 
-
+//MARK: -extension
 extension ChatViewController: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
