@@ -30,6 +30,7 @@ class ChatViewController: UIViewController {
 
     }
     
+    //MARK: -Actions
     @IBAction func sendPressed(_ sender: UIButton) {
         
         if let messageBody = messageTextfield.text, let messageSender = Auth.auth().currentUser?.email {
@@ -46,29 +47,32 @@ class ChatViewController: UIViewController {
         }
     }
     
-    
     func loadMessage() {
-        
-        message = []
-        
-        db.collection(k.FStore.collectionName).getDocuments { (querySnapshot, error) in
+        db.collection(k.FStore.collectionName).addSnapshotListener { (querySnapshot, error) in
+            
+            self.message = [] 
             if let e = error {
-                print("there was an issue retrieving data from FireStrore. \(e)")
-            }else {
-                
-                if let snapshotDocuments = querySnapshot?.documents{
+                print("There was an issue retrieving data from Firestore. \(e)")
+            } else {
+        
+                if let snapshotDocuments = querySnapshot?.documents {
                     for doc in snapshotDocuments {
                         let data = doc.data()
-                        if let messageSender = data[k.FStore.senderField] as? String, let messageBody = data[k.FStore.bodyField] as? String {
+                        if let messageSender = data[k.FStore.senderField] as? String,
+                           let messageBody = data[k.FStore.bodyField] as? String {
                             let newMessage = Messages(sender: messageSender, body: messageBody)
                             self.message.append(newMessage)
                         }
                     }
+
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                    }
                 }
             }
-            
         }
     }
+
     
     
     @IBAction func logOutPressed(_ sender: UIBarButtonItem) {
@@ -97,7 +101,7 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource{
         
         let cell = tableView.dequeueReusableCell(withIdentifier: k.cellIdentifier, for: indexPath) as! MessageCellTableViewCell
         
-        cell.label.text = message[indexPath.row].sender
+        cell.label.text = message[indexPath.row].body
         return cell
         
         
