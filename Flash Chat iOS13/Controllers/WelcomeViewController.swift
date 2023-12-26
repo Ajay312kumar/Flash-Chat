@@ -5,26 +5,33 @@ import CLTypingLabel
 import FirebaseCore
 
 class WelcomeViewController: UIViewController {
-
-    @IBOutlet weak var titleLabel: CLTypingLabel!
-
     
-    let textFlash = k.textFlashe
-    var index = 0
+    @IBOutlet weak var titleLabel: CLTypingLabel!
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.isNavigationBarHidden = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.isNavigationBarHidden = false
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-       
-        for letter in textFlash {
-            Timer.scheduledTimer(withTimeInterval: 0.1 * Double(index), repeats: false) {(timer) in
-                
+        
+        
+        titleLabel.text = ""
+        var charIndex = 0.0
+        let titleText = k.appName
+        for letter in titleText {
+            Timer.scheduledTimer(withTimeInterval: 0.1 * charIndex, repeats: false) { (timer) in
                 self.titleLabel.text?.append(letter)
             }
-            index += 1
+            charIndex += 1
         }
         
+        
     }
-    
-
 }

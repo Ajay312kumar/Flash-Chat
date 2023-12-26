@@ -10,6 +10,7 @@ import Foundation
 
 struct k {
     
+    static let appName = "⚡️FlashChat"
     static let  RegisterToChat = "RegisterToChat"
     static let  LoginToChat = "LoginToChat"
     static let  textFlashe = "⚡️FlashChat"
