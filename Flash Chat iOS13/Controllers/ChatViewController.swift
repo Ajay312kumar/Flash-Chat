@@ -20,7 +20,7 @@ class ChatViewController: UIViewController {
         super.viewDidLoad()
 
         title = "⚡️FlashChat"
-        navigationItem.hidesBackButton = true
+        navigationItem.hidesBackButton = false
         
         tableView.delegate = self
         tableView.dataSource = self
